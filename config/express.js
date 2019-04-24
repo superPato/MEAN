@@ -1,8 +1,11 @@
+const config = require('./config');
+
 const express = require('express');
 const morgan = require('morgan');
 const compress = require('compression');
 const bodyParser = require('body-parser');
 const methodOverride = require('method-override');
+const session = require('express-session');
 
 module.exports = function () {
     const app = express();
@@ -20,6 +23,12 @@ module.exports = function () {
     app.use(bodyParser.json());
 
     app.use(methodOverride());
+
+    app.use(session({
+        saveUninitialized: true,
+        resave: true,
+        secret: config.sessionSecret
+    }));
 
     app.set('views', './app/views');
 
