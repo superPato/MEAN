@@ -38,3 +38,19 @@ exports.userByID = function (req, res, next, id) {
 		}
 	})
 }
+
+exports.update = function (req, res, next) {
+	// Note that the default Mongoose behavior is to pass 
+	// the callback to the document before it was updated
+	User.findByIdAndUpdate(req.user.id, req.body, {
+		// by setting the new option to true , we're making sure 
+		// that we're receiving the updated document.
+		'new': true
+	}, (err, user) => {
+		if (err) {
+			return next(err);
+		} else {
+			res.status(200).json(user);
+		}
+	});
+};
